@@ -3,7 +3,7 @@ data class Tamu(
     val id: Int,
     val user_id: Int,
     val nama: String,
-    val alamat: String,
+    val instansi: String,
     val keperluan: String,
     val created_at: String
 )

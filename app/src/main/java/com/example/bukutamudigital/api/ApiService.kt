@@ -14,8 +14,16 @@ interface ApiService {
     @GET("get_tamu.php")
     fun getTamu(@Query("token") token: String): Call<TamuListResponse>
 
+    // 1. Tambahkan anotasi @FormUrlEncoded di atas fungsi
+    @FormUrlEncoded
     @POST("add_tamu.php")
-    fun addTamu(@Body body: Map<String, String>): Call<GenericResponse>
+    fun addTamu(
+        @Header("Authorization") token: String,    // Token tetap di header
+        // 2. Ganti @Body dengan tiga @Field terpisah
+        @Field("nama") nama: String,
+        @Field("instansi") instansi: String,
+        @Field("keperluan") keperluan: String
+    ): Call<GenericResponse>
 
     @POST("edit_tamu.php")
     fun editTamu(@Body body: Map<String, String>): Call<GenericResponse>

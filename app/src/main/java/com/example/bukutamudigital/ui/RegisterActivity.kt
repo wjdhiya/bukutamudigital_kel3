@@ -48,24 +48,42 @@ class RegisterActivity : AppCompatActivity() {
                     ) {
                         if (response.isSuccessful && response.body() != null) {
                             val res = response.body()!!
-                            if (res.success) {
+                            val message = res.message ?: "Terjadi kesalahan"
+
+                            // Cek apakah sukses ATAU pesan mengandung kata 'Berhasil'
+                            // (untuk mengatasi masalah inkonsistensi server)
+                            val isSuccess = res.success || message.contains("Berhasil", ignoreCase = true)
+
+                            if (isSuccess) {
+                                // 1. Kasus Berhasil
                                 Toast.makeText(
                                     this@RegisterActivity,
-                                    "Registrasi berhasil: ${res.message}",
+                                    "Registrasi Berhasil", // Sesuai permintaan Anda
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 finish()
                             } else {
+                                // 2. Kasus Gagal
+                                val errorMessage: String
+
+                                // Cek pesan untuk kasus "Username sudah dipakai"
+                                if (message.contains("sudah terdaftar", ignoreCase = true) || message.contains("already exists", ignoreCase = true) || message.contains("sudah dipakai", ignoreCase = true)) {
+                                    errorMessage = "Username sudah dipakai" // Sesuai permintaan Anda
+                                } else {
+                                    errorMessage = "Gagal: $message"
+                                }
+
                                 Toast.makeText(
                                     this@RegisterActivity,
-                                    "Gagal: ${res.message}",
+                                    errorMessage,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         } else {
+                            // Respons HTTP tidak 2xx (misalnya 400, 500)
                             Toast.makeText(
                                 this@RegisterActivity,
-                                "Gagal: Respons server tidak valid",
+                                "Gagal: Respons server tidak valid (Kode: ${response.code()})",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }

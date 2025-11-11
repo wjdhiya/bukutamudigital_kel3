@@ -1,18 +1,18 @@
-// Salin dan ganti seluruh isi file /app/build.gradle.kts dengan ini
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    // 💡 PERBAIKAN: Mengganti kotlin("parcelize") dengan notasi ID string yang lebih eksplisit
+    id("kotlin-parcelize")
 }
 
 android {
     namespace = "com.example.bukutamudigital"
-    compileSdk = 34 // 👈 WAJIB: Gunakan SDK Stabil Terbaru (Android 14)
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.bukutamudigital"
-        minSdk = 24 // 👈 REKOMENDASI: Jangkau Android 7.0+ (>96% pengguna)
-        targetSdk = 34 // 👈 WAJIB: Samakan dengan compileSdk
+        minSdk = 24
+        targetSdk = 34
 
         versionCode = 1
         versionName = "1.0"
@@ -30,14 +30,12 @@ android {
         }
     }
     compileOptions {
-        // Gunakan Java 17 untuk menyesuaikan dengan Gradle modern
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "17"
     }
-    // Tidak perlu lagi mematikan lint warning, biarkan Android Studio membantu Anda
 }
 
 dependencies {
@@ -45,6 +43,9 @@ dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
+
+    // Dependencies untuk Parcelize (biasanya tidak wajib jika plugin aktif, tapi amannya ditambahkan)
+    implementation("androidx.core:core-ktx:1.13.1")
 
     // Versi-versi di bawah ini sudah OK, tidak perlu diubah
     implementation("androidx.recyclerview:recyclerview:1.3.2")

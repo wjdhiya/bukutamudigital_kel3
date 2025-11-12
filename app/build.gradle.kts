@@ -46,6 +46,7 @@ dependencies {
 
     // Dependencies untuk Parcelize (biasanya tidak wajib jika plugin aktif, tapi amannya ditambahkan)
     implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.cardview:cardview:1.0.0")
 
     // Versi-versi di bawah ini sudah OK, tidak perlu diubah
     implementation("androidx.recyclerview:recyclerview:1.3.2")

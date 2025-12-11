@@ -1,8 +1,12 @@
+// build.gradle.kts (:app)
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    // 💡 PERBAIKAN: Mengganti kotlin("parcelize") dengan notasi ID string yang lebih eksplisit
     id("kotlin-parcelize")
+
+    // BARIS TAMBAHAN UNTUK FIREBASE
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -13,7 +17,6 @@ android {
         applicationId = "com.example.bukutamudigital"
         minSdk = 24
         targetSdk = 34
-
         versionCode = 1
         versionName = "1.0"
 
@@ -29,32 +32,45 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
     }
 }
 
 dependencies {
-    // ❗ Gunakan versi manual yang stabil dan kompatibel dengan compileSdk 34
+
+    // Core
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
 
-    // Dependencies untuk Parcelize (biasanya tidak wajib jika plugin aktif, tapi amannya ditambahkan)
-    implementation("androidx.core:core-ktx:1.13.1")
+    // UI
     implementation("androidx.cardview:cardview:1.0.0")
-
-    // Versi-versi di bawah ini sudah OK, tidak perlu diubah
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // Dependencies untuk testing
+    // START FIREBASE & GOOGLE SIGN-IN
+
+    // 1. Firebase Bill of Materials (BOM)
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+
+    // 2. Firebase Authentication SDK
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    // 3. Google Sign-In SDK
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

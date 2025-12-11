@@ -87,6 +87,22 @@
                 android:paddingVertical="14dp"
                 app:cornerRadius="8dp" />
 
+            <!-- Separator -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="atau"
+                android:textSize="14sp"
+                android:textColor="#888888" />
+
+            <!-- Tombol Google Sign-In -->
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/btnGoogleSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
             <!-- Tombol Register -->
             <TextView
                 android:id="@+id/tvRegister"

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "548416802674",
+    "project_id": "bukutamu-8bc1d",
+    "storage_bucket": "bukutamu-8bc1d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548416802674:android:b0f5d85a484b60758717eb",
+        "android_client_info": {
+          "package_name": "com.example.bukutamudigital"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548416802674-679hk731gvd7pjethvemspqcl4reolo2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bukutamudigital",
+            "certificate_hash": "d5501c38364a37e0cc0869c98a993d66e4ba5e6d"
+          }
+        },
+        {
+          "client_id": "548416802674-gbj4m1gct585j5a96jp2m425b41plh9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSHvDFgdrTWYQuv4c_I22CHOucxxi4ktI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548416802674-gbj4m1gct585j5a96jp2m425b41plh9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

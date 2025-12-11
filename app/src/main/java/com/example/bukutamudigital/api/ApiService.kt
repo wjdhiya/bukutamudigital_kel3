@@ -12,6 +12,10 @@ interface ApiService {
     @POST("login.php")
     fun login(@Body body: Map<String, String>): Call<LoginResponse>
 
+    // Endpoint baru untuk login via Google
+    @POST("login_google.php")
+    fun loginWithGoogle(@Body body: Map<String, String>): Call<LoginResponse>
+
     // Menggunakan Header untuk otorisasi yang konsisten
     @GET("get_tamu.php")
     fun getTamu(@Header("Authorization") token: String): Call<TamuListResponse>

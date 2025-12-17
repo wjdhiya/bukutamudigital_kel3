@@ -5,9 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Tamu(
-    val id: Int, // Asumsi ID tamu bertipe Int di database
+    // Gunakan System.currentTimeMillis() untuk ID unik sederhana
+    val id: Long = System.currentTimeMillis(), 
     val nama: String,
     val instansi: String,
-    val keperluan: String,
-    val created_at: String
+    val keperluan: String
 ) : Parcelable

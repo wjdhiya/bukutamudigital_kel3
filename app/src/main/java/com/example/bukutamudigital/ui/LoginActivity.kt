@@ -2,7 +2,7 @@ package com.example.bukutamudigital.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log // Import Log untuk debugging
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -24,16 +24,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-// Pastikan Anda sudah punya DashboardActivity di package com.example.bukutamudigital.ui
-// import com.example.bukutamudigital.ui.DashboardActivity // (Jika sudah ada di package yang sama, tidak perlu import eksplisit)
-
 class LoginActivity : AppCompatActivity() {
     private lateinit var session: SessionManager
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
 
-    // Tag untuk Logcat, memudahkan debugging
-    private val TAG = "FIREBASE_AUTH_DEBUG"
+    private val TAG = "FIREBASE_AUTH"
 
     private val googleSignInLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -41,21 +37,16 @@ class LoginActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
-                // Berhasil mendapatkan Account dari Google
                 val account = task.getResult(ApiException::class.java)!!
                 val idToken = account.idToken
-
                 if (idToken != null) {
-                    Log.d(TAG, "Google ID Token berhasil diterima. Memulai Auth Firebase...")
                     firebaseAuthWithGoogle(idToken)
                 } else {
-                    Log.e(TAG, "ID Token NULL setelah Google Sign-In berhasil.")
-                    Toast.makeText(this, "Gagal mendapatkan ID Token dari Google", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Gagal mendapatkan ID Token Google", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: ApiException) {
-                // Kegagalan Google Sign-In (misalnya dibatalkan pengguna)
-                Log.e(TAG, "Google sign in failed: Status Code ${e.statusCode}", e)
-                Toast.makeText(this, "Login Google Gagal: Kode ${e.statusCode}", Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "Google sign in failed", e)
+                Toast.makeText(this, "Login Google Gagal: ${e.statusCode}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -72,23 +63,19 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        // Inisialisasi View
         val etUser = findViewById<EditText>(R.id.etUsername)
         val etPass = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnGoogleSignIn = findViewById<SignInButton>(R.id.btnGoogleSignIn)
         val tvRegister = findViewById<TextView>(R.id.tvRegister)
 
-        // Konfigurasi Google Sign-In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            // Menggunakan R.string.default_web_client_id yang sudah Anda isi
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        // Listener Login Biasa
         btnLogin.setOnClickListener {
             val username = etUser.text.toString().trim()
             val password = etPass.text.toString()
@@ -101,12 +88,10 @@ class LoginActivity : AppCompatActivity() {
             loginUser(body)
         }
 
-        // Listener Google Sign-In
         btnGoogleSignIn.setOnClickListener {
             signInWithGoogle()
         }
 
-        // Listener Register
         tvRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
@@ -117,30 +102,28 @@ class LoginActivity : AppCompatActivity() {
         googleSignInLauncher.launch(signInIntent)
     }
 
-    // FUNGSI UTAMA: Mengautentikasi ID Token Google ke Firebase
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // BERHASIL LOGIN KE FIREBASE
-                    Log.d(TAG, "Autentikasi Firebase Berhasil. User ID: ${firebaseAuth.currentUser?.uid}")
-
-                    Toast.makeText(this, "Login Google Berhasil (via Firebase)!", Toast.LENGTH_SHORT).show()
-                    goToDashboard()
-
+                    Log.d(TAG, "signInWithCredential:success")
+                    val firebaseUser = firebaseAuth.currentUser
+                    if (firebaseUser != null) {
+                        // SIMPAN SESI LOKAL SETELAH LOGIN GOOGLE BERHASIL
+                        session.saveSession(0, firebaseUser.uid) // user_id 0, token diisi UID firebase
+                        Toast.makeText(this, "Login Google Berhasil.", Toast.LENGTH_SHORT).show()
+                        goToDashboard()
+                    } else {
+                        Toast.makeText(this, "Gagal mendapatkan data user dari Firebase.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    // GAGAL LOGIN KE FIREBASE
-                    // Log error secara detail ke Logcat
-                    Log.e(TAG, "Firebase auth failed: ${task.exception?.message}", task.exception)
-
-                    Toast.makeText(this, "Autentikasi Firebase Gagal! Cek Logcat.", Toast.LENGTH_LONG).show()
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Toast.makeText(this, "Autentikasi Gagal.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    // FUNGSI loginUser dan goToDashboard tetap sama
     private fun loginUser(body: Map<String, String>) {
         ApiClient.apiService.login(body).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {

@@ -9,27 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bukutamudigital.R
 import com.example.bukutamudigital.model.Tamu
 
-/** 💡 1. DEFINISI INTERFACE */
 interface OnItemClickListener {
-    fun onEditClick(tamu: Tamu)
     fun onDeleteClick(tamu: Tamu)
+    fun onEditClick(tamu: Tamu) // Tambahkan fungsi untuk edit
 }
 
-
 class TamuAdapter(
-    private var tamuList: List<Tamu>,
-    private val listener: OnItemClickListener // Listener untuk Edit/Hapus
+    private var tamuList: MutableList<Tamu>,
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<TamuAdapter.TamuViewHolder>() {
 
-    /** 💡 2. VIEWHOLDER: Termasuk TextViews dan ImageButtons */
     class TamuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvNama: TextView = itemView.findViewById(R.id.tvNamaTamu)
         val tvInstansi: TextView = itemView.findViewById(R.id.tvInstansiTamu)
         val tvKeperluan: TextView = itemView.findViewById(R.id.tvKeperluanTamu)
-
-        // Tombol Aksi
-        val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit)
         val btnHapus: ImageButton = itemView.findViewById(R.id.btnHapus)
+        val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit) // Referensi ke tombol edit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TamuViewHolder {
@@ -43,13 +38,13 @@ class TamuAdapter(
         holder.tvInstansi.text = tamu.instansi
         holder.tvKeperluan.text = tamu.keperluan
 
-        // 💡 3. TERAPKAN LISTENER
-        holder.btnEdit.setOnClickListener {
-            listener.onEditClick(tamu)
-        }
-
         holder.btnHapus.setOnClickListener {
             listener.onDeleteClick(tamu)
+        }
+
+        // Pasang listener di tombol edit
+        holder.btnEdit.setOnClickListener {
+            listener.onEditClick(tamu)
         }
     }
 
@@ -57,9 +52,9 @@ class TamuAdapter(
         return tamuList.size
     }
 
-    /** 💡 4. FUNGSI UPDATE DATA (Kunci Refresh) */
     fun updateData(newData: List<Tamu>) {
-        this.tamuList = newData
+        this.tamuList.clear()
+        this.tamuList.addAll(newData)
         notifyDataSetChanged()
     }
 }

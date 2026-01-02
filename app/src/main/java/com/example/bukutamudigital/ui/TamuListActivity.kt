@@ -12,14 +12,12 @@ import com.example.bukutamudigital.adapter.OnItemClickListener
 import com.example.bukutamudigital.adapter.TamuAdapter
 import com.example.bukutamudigital.model.Tamu
 import com.example.bukutamudigital.utils.TamuStorage
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 
 class TamuListActivity : AppCompatActivity(), OnItemClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var tamuAdapter: TamuAdapter
-    private lateinit var fabAddTamu: FloatingActionButton
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,18 +25,13 @@ class TamuListActivity : AppCompatActivity(), OnItemClickListener {
         setContentView(R.layout.activity_tamu_list)
 
         firebaseAuth = FirebaseAuth.getInstance()
-        supportActionBar?.title = "Daftar Tamu (Lokal)"
+        supportActionBar?.title = "Daftar Tamu"
 
-        //recyclerView = findViewById(R.id.recyclerViewTamu)
-        fabAddTamu = findViewById(R.id.btnTambahTamu)
+        // --- LANGKAH PENTING: Inisialisasi dulu sebelum digunakan ---
+        recyclerView = findViewById(R.id.recyclerViewTamu)
 
+        // Setelah di-inisialisasi, baru panggil fungsi setup
         setupRecyclerView()
-
-        fabAddTamu.setOnClickListener {
-            // Buka AddTamuActivity dalam mode TAMBAH (tanpa mengirim data)
-            val intent = Intent(this, AddTamuActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     override fun onResume() {
@@ -48,6 +41,7 @@ class TamuListActivity : AppCompatActivity(), OnItemClickListener {
 
     private fun setupRecyclerView() {
         tamuAdapter = TamuAdapter(mutableListOf(), this)
+        // Sekarang recyclerView sudah ada isinya, tidak akan crash lagi
         recyclerView.apply {
             adapter = tamuAdapter
             layoutManager = LinearLayoutManager(this@TamuListActivity)
@@ -69,9 +63,7 @@ class TamuListActivity : AppCompatActivity(), OnItemClickListener {
         showDeleteConfirmationDialog(tamu)
     }
 
-    // Implementasikan fungsi onEditClick dari interface
     override fun onEditClick(tamu: Tamu) {
-        // Buka AddTamuActivity dalam mode EDIT dengan mengirim data tamu
         val intent = Intent(this, AddTamuActivity::class.java).apply {
             putExtra("EXTRA_TAMU_DATA", tamu)
         }
@@ -98,7 +90,7 @@ class TamuListActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun handleUserNotLoggedIn() {
-        Toast.makeText(this, "Sesi pengguna tidak ditemukan, silakan login ulang.", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Sesi tidak ditemukan, silakan login ulang.", Toast.LENGTH_LONG).show()
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)

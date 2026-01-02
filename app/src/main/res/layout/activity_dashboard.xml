@@ -1,28 +1,104 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center_horizontal"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F0F4F3">
 
-    <TextView
-        android:text="Dashboard Buku Tamu Digital"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/btnLihatTamu"
-        android:text="Lihat Daftar Tamu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:background="@drawable/circle_decoration"
+        android:alpha="0.2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="-60dp"
+        android:layout_marginStart="-60dp" />
 
     <Button
         android:id="@+id/btnLogout"
-        android:text="Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Keluar"
+        android:textSize="12sp"
+        android:textAllCaps="false"
+        android:backgroundTint="#A3423C"
+        android:textColor="@color/white"
+        app:cornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buku Tamu Digital"
+            android:textSize="28sp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="#1A3C34"
+            android:layout_marginBottom="8dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selamat datang di panel admin"
+            android:textSize="16sp"
+            android:textColor="#6C7A77"
+            android:layout_marginBottom="40dp"
+            android:gravity="center" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <Button
+                    android:id="@+id/btnTambahTamu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tambah Tamu Baru"
+                    android:textAllCaps="false"
+                    android:paddingVertical="14dp"
+                    android:backgroundTint="#2D6A4F"
+                    android:textSize="16sp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnLihatTamu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Kelola Daftar Tamu"
+                    android:textAllCaps="false"
+                    android:paddingVertical="14dp"
+                    android:backgroundTint="#1A3C34"
+                    android:textSize="16sp"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

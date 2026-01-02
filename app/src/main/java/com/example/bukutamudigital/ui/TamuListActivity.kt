@@ -29,7 +29,7 @@ class TamuListActivity : AppCompatActivity(), OnItemClickListener {
         firebaseAuth = FirebaseAuth.getInstance()
         supportActionBar?.title = "Daftar Tamu (Lokal)"
 
-        recyclerView = findViewById(R.id.recyclerViewTamu)
+        //recyclerView = findViewById(R.id.recyclerViewTamu)
         fabAddTamu = findViewById(R.id.btnTambahTamu)
 
         setupRecyclerView()

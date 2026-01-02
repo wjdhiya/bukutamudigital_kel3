@@ -24,7 +24,6 @@ class DashboardActivity : AppCompatActivity() {
         session = SessionManager(this)
         firebaseAuth = FirebaseAuth.getInstance()
 
-        // Konfigurasi GoogleSignInClient diperlukan untuk memanggil signOut()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -32,23 +31,27 @@ class DashboardActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        // Inisialisasi Tombol sesuai ID di XML
+        val btnTambahTamu = findViewById<Button>(R.id.btnTambahTamu)
         val btnLihatTamu = findViewById<Button>(R.id.btnLihatTamu)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
+        // Fungsi Tombol Tambah Tamu (Pindah ke AddTamuActivity)
+        btnTambahTamu.setOnClickListener {
+            val intent = Intent(this, AddTamuActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Fungsi Tombol Lihat Daftar Tamu
         btnLihatTamu.setOnClickListener {
             startActivity(Intent(this, TamuListActivity::class.java))
         }
 
+        // Fungsi Tombol Logout
         btnLogout.setOnClickListener {
-            // 1. Hapus sesi lokal Anda
             session.clearSession()
-
-            // 2. Logout dari Firebase Authentication
             firebaseAuth.signOut()
-
-            // 3. Logout dari Google Sign-In Client
             googleSignInClient.signOut().addOnCompleteListener {
-                // Setelah semua proses logout selesai, kembali ke LoginActivity
                 Toast.makeText(this, "Anda telah logout", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
